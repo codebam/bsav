@@ -99,7 +99,8 @@ async function encryptSav(yaml, userID) {
       a = (a + buf[i]) % 65521;
       b = (b + a) % 65521;
     }
-    return (b << 16) | a;
+    // THE FIX IS HERE: `>>> 0` ensures the result is an unsigned 32-bit integer.
+    return ((b << 16) | a) >>> 0;
   }
   const adler = adler32(yamlBytes);
   const uncompressedLen = yamlBytes.length;
